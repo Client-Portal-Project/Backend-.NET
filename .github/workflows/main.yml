@@ -1,0 +1,27 @@
+
+name: CI
+on:  
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]  
+    
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    name: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: dotnet restore .
+      - run: dotnet build .
+      
+  test:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: dotnet test .
+  

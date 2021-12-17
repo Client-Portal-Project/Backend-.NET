@@ -1,0 +1,24 @@
+
+As Client, I should be able to:
+
+-View a list of courses including start and end date,
+-Place an order for giving number of developers,
+-Receive notification on my order status update,
+-Confirm my email address,
+-Reset my login credentials,
+
+
+As Salesteam member, I should be able to:
+-View client order,
+-Aprove client order,
+-Confirm my email adress,
+-Reset my login credentials,
+
+As developer (student):
+-Update some of basic information,
+-Confirm my email adress,
+-Reset my login credentials
+
+
+
+As Admin:
