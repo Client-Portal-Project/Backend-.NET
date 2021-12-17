@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using REST.DataLayer;
@@ -9,9 +10,10 @@ using REST.DataLayer;
 namespace REST.Migrations
 {
     [DbContext(typeof(BatchesDBContext))]
-    partial class BatchesDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211122223725_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +38,12 @@ namespace REST.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("EmploymentStatus")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("text");
 
                     b.Property<byte[]>("Resume")
@@ -143,32 +151,15 @@ namespace REST.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("ClientId");
 
-                    b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("REST.Models.ClientUser", b =>
-                {
-                    b.Property<int>("ClientUserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ClientID")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClientUserId");
-
-                    b.HasIndex("ClientID");
-
-                    b.HasIndex("UserID")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ClientUsers");
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("REST.Models.Interview", b =>
@@ -294,15 +285,6 @@ namespace REST.Migrations
                     b.Property<bool>("Approved")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
@@ -379,21 +361,13 @@ namespace REST.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("REST.Models.ClientUser", b =>
+            modelBuilder.Entity("REST.Models.Client", b =>
                 {
-                    b.HasOne("REST.Models.Client", "Client")
-                        .WithMany("ClientUsers")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("REST.Models.User", "User")
-                        .WithOne("ClientUser")
-                        .HasForeignKey("REST.Models.ClientUser", "UserID")
+                        .WithOne("Client")
+                        .HasForeignKey("REST.Models.Client", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Client");
 
                     b.Navigation("User");
                 });
@@ -469,8 +443,6 @@ namespace REST.Migrations
 
             modelBuilder.Entity("REST.Models.Client", b =>
                 {
-                    b.Navigation("ClientUsers");
-
                     b.Navigation("Needs");
                 });
 
@@ -497,7 +469,7 @@ namespace REST.Migrations
                 {
                     b.Navigation("Applicant");
 
-                    b.Navigation("ClientUser");
+                    b.Navigation("Client");
 
                     b.Navigation("Owner");
                 });
