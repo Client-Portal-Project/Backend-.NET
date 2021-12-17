@@ -1,4 +1,6 @@
-using System;
+// Depreciated, to be refactored for ApplicationOccupationController ***
+
+/* using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -110,4 +112,4 @@ namespace REST.Controllers
         }
 
     }
-}
+} */
