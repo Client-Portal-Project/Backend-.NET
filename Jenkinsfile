@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Restore Package') {
             steps {
-                sh 'dotnet restore Backend-NET.sln'
+                sh 'dotnet -h'
             }
         }
     }
