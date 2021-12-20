@@ -21,5 +21,12 @@ pipeline {
                 discordSend description: ":soap: Cleaned Workspace for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
             }
         }
+
+        stage('Build') {
+            steps {
+                sh 'dotnet build Backend-NET.sln --configuration Release --no-restore'
+                discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
+            }
+        }
     }
 }
