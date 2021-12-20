@@ -5,6 +5,8 @@ pipeline {
         disableConcurrentBuilds()
     }
 
+    tools {dotnet 'dotnet'}
+
     stages {
         stage('Restore Package') {
             steps {
