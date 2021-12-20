@@ -5,8 +5,6 @@ pipeline {
         disableConcurrentBuilds()
     }
 
-    tools{ msbuild 'msbuild'}
-
     stages {
         stage('Restore Package') {
             steps {
