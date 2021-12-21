@@ -35,7 +35,8 @@ pipeline {
     }
     post {
         failure {
-            discordSend description: ":boom: ${env.JOB_NAME} pipeline failed in the ${curr} Stage", result: currentBuild.currentResult, webhookURL: WEBHO_NET
+            discordSend description: ":boom: ${env.JOB_NAME} pipeline failed in the ${curr} Stage **@Backend - .Net**", 
+            result: currentBuild.currentResult, webhookURL: WEBHO_NET
         }
     }
 }
