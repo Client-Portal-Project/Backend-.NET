@@ -1,3 +1,4 @@
+def curr = 'pre-pipeline'
 pipeline {
     agent any
     options {
@@ -10,6 +11,7 @@ pipeline {
     stages {
         stage('Restore Package') {
             steps {
+                curr = 'Restoring'
                 sh 'dotnet restore Backend-NET.sln'
                 discordSend description: ":adhesive_bandage: Restored Packages for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
             }
@@ -17,6 +19,7 @@ pipeline {
 
         stage('Clean Workspace') {
             steps {
+                curr = 'Cleaning'
                 sh 'dotnet clean Backend-NET.sln --configuration Release'
                 discordSend description: ":soap: Cleaned Workspace for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
             }
@@ -24,9 +27,16 @@ pipeline {
 
         stage('Build') {
             steps {
+                curr = 'Building'
                 sh 'dotnet build Backend-NET.sln --configuration Release --no-restore'
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
+        }
+    }
+
+    post {
+        failure {
+            discordSend description: ":boom: ${env.JOB_NAME} pipeline failed in the ${curr} Stage", result: currentBuild.currentResult, webhookURL: WEBHO_NET
         }
     }
 }
