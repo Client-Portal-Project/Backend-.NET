@@ -32,19 +32,10 @@ namespace REST
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
-            //services.AddScoped<IOccupationRepo, OccupationRepo>();
             services.AddScoped<IClientRepo, ClientRepo>();
             services.AddScoped<INeedRepo, NeedRepo>();
             services.AddScoped<IOwnerRepo, OwnerRepo>();
-            //services.AddScoped<ITopicRepo, TopicRepo>();
-            //services.AddScoped<IOrderRepo, OrderRepo>();
-            //services.AddScoped<IUserRepo, UserRepo>();
 
-            //services.AddScoped<IOccupationBL, OccupationBL>();
-            //services.AddScoped<IOrderBL, OrderBL>();
-            //services.AddScoped<ITopicBL, TopicBL>();
-            //services.AddScoped<IUserBL, UserBL>();
 
 
             //services.AddDbContext<BatchesDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "TestDatabase"));
@@ -56,9 +47,6 @@ namespace REST
             
 
             services.AddSingleton(_ => Configuration);
-
-            // services.AddScoped<IOccupationRepo, OccupationRepo>();
-            // services.AddScoped<IOrderRepo, OrderRepo>();
 
             services.AddFluentValidation(cfg => 
             {
