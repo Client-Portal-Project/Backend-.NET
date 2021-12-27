@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore 2> err'
+                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err'
                     sh "${CMD}"
                     ERR = readFile('err').trim()
                 }
