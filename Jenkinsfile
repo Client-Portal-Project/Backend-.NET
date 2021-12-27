@@ -46,8 +46,8 @@ pipeline {
     post {
         failure {
             discordSend title: "**:boom: ${env.JOB_NAME} Failure**",
-                        description: "Failed in the ${curr} Stage: \n
-                        Failure Source: ${cmd}",
+                        description: "Failed in the ${curr} Stage: \n" +
+                        "Failure Source: ${cmd}",
                         result: currentBuild.currentResult, webhookURL: WEBHO_NET
         }
     }
