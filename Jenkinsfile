@@ -42,6 +42,7 @@ pipeline {
                     ERR = sh(script: CMD, returnStatus: true)
                     if (ERR != 0) ERR = readFile('err.txt').trim()
                 }
+                currentBuild.currentResult = 'FAILURE'
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
         }
