@@ -39,7 +39,7 @@ pipeline {
                 script {
                     CURR = 'Building'
                     CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore'
-                    ERR = sh (script: CMD, returnStdout: true)
+                    ERR = sh (script: CMD, returnStdout: true).trim()
                 }
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
@@ -48,8 +48,7 @@ pipeline {
     post {
         failure {
             discordSend title: "**:boom: ${env.JOB_NAME} Failure in ${CURR} Stage**",
-                        description: "*${CMD}*\n\n" +
-                        "${ERR}",
+                        description: "*${CMD}*\n\n${ERR}",
                         result: currentBuild.currentResult, webhookURL: WEBHO_NET
         }
     }
