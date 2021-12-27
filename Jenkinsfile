@@ -19,6 +19,7 @@ pipeline {
                     CMD = 'dotnet restore Backend-NET.sln > err'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('err').trim()
+                        CMD = CMD.split(" > ")[0].trim()
                         error('Failed')
                     }
                 }
@@ -33,6 +34,7 @@ pipeline {
                     CMD = 'dotnet clean Backend-NET.sln --configuration Release > err'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('err').trim()
+                        CMD = CMD.split(" > ")[0].trim()
                         error('Failed')
                     }
                 }
@@ -47,6 +49,7 @@ pipeline {
                     CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('err').trim()
+                        CMD = CMD.split(" > ")[0].trim()
                         error('Failed')
                     }
                 }
@@ -57,7 +60,7 @@ pipeline {
     post {
         failure {
             discordSend title: "**:boom: ${env.JOB_NAME} Failure in ${CURR} Stage**",
-                        description: "*${CMD.split('>')[0]}*\n\n${ERR}",
+                        description: "*${CMD}*\n\n${ERR}",
                         result: currentBuild.currentResult, webhookURL: WEBHO_NET
         }
     }
