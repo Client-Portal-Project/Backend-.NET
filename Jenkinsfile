@@ -17,7 +17,10 @@ pipeline {
                 script { 
                     CURR = 'Restoring' 
                     CMD = 'dotnet restore Backend-NET.sln > err'
-                    ERR = sh(script: CMD, returnStdout: true)
+                    if (sh(script: CMD, returnStatus: true) != 0) {
+                        ERR = readFile('err').trim()
+                        error('Failed')
+                    }
                 }
                 discordSend description: ":adhesive_bandage: Restored Packages for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
             }
@@ -27,9 +30,11 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Cleaning'
-                    CMD = 'dotnet clean Backend-NET.sln --configuration Release 2> err'
-                    sh "${CMD}"
-                    ERR = readFile('err').trim()
+                    CMD = 'dotnet clean Backend-NET.sln --configuration Release > err'
+                    if (sh(script: CMD, returnStatus: true) != 0) {
+                        ERR = readFile('err').trim()
+                        error('Failed')
+                    }
                 }
                 discordSend description: ":soap: Cleaned Workspace for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
             }
@@ -39,7 +44,7 @@ pipeline {
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err'
+                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore 2> err'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('err').trim()
                         error('Failed')
@@ -50,9 +55,6 @@ pipeline {
         }
     }
     post {
-        always {
-            echo "${ERR}"
-        }
         failure {
             discordSend title: "**:boom: ${env.JOB_NAME} Failure in ${CURR} Stage**",
                         description: "*${CMD}*\n\n${ERR}",
