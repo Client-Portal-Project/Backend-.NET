@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Restoring' 
-                    CMD = 'dotnet restore Backend-NET.sln 2>&1'
+                    CMD = 'dotnet restore Backend-NET.sln 2> err'
                     ERR = sh(script: CMD, returnStdout: true)
                 }
                 discordSend description: ":adhesive_bandage: Restored Packages for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
@@ -27,8 +27,9 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Cleaning'
-                    CMD = 'dotnet clean Backend-NET.sln --configuration Release 2>&1'
-                    ERR = sh(script: CMD, returnStdout: true)
+                    CMD = 'dotnet clean Backend-NET.sln --configuration Release 2> err'
+                    sh "${CMD}"
+                    ERR = readFile('err').trim()
                 }
                 discordSend description: ":soap: Cleaned Workspace for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
             }
@@ -38,9 +39,9 @@ pipeline {
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err.txt'
-                    ERR = sh(script: CMD, returnStatus: true)
-                    if (ERR != 0) ERR = readFile('err.txt').trim()
+                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore 2> err'
+                    sh "${CMD}"
+                    ERR = readFile('err').trim()
                 }
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
