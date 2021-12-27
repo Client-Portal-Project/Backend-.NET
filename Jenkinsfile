@@ -39,9 +39,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore'
-                    ERR = sh (script: CMD)
+                    env.CURR = 'Building'
+                    env.CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore'
+                    env.ERR = sh (script: CMD)
                 }
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
