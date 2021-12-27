@@ -40,8 +40,7 @@ pipeline {
                 script {
                     CURR = 'Building'
                     CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err'
-                    sh(script: CMD, returnStdout: true)
-                    ERR = readFile('err').trim()
+                    if (sh(script: CMD, returnStatus: true) != 0) ERR = readFile('err').trim()
                 }
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
