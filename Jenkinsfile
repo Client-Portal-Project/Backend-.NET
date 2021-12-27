@@ -63,7 +63,7 @@ pipeline {
             discordSend title: "**:boom: ${env.JOB_NAME} Failure in ${CURR} Stage**",
                         description: "*${CMD}*\n\n${ERR}",
                         footer: "Follow title URL for full console output",
-                        link: env.BUILD_URL + "/console",
+                        link: env.BUILD_URL + "console", thumbnail: 'https://jenkins.io/images/logos/fire/256.png',
                         result: currentBuild.currentResult, webhookURL: WEBHO_NET
         }
     }
