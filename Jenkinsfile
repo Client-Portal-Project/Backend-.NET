@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore 2> err'
+                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('err').trim()
                         error('Failed')
