@@ -16,9 +16,9 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Restoring' 
-                    CMD = 'dotnet restore Backend-NET.sln > err'
+                    CMD = 'dotnet restore Backend-NET.sln > result'
                     if (sh(script: CMD, returnStatus: true) != 0) {
-                        ERR = readFile('err').trim()
+                        ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
                         error('Failed')
                     }
@@ -31,9 +31,9 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Cleaning'
-                    CMD = 'dotnet clean Backend-NET.sln --configuration Release > err'
+                    CMD = 'dotnet clean Backend-NET.sln --configuration Release > result'
                     if (sh(script: CMD, returnStatus: true) != 0) {
-                        ERR = readFile('err').trim()
+                        ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
                         error('Failed')
                     }
@@ -46,9 +46,9 @@ pipeline {
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > err'
+                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > result'
                     if (sh(script: CMD, returnStatus: true) != 0) {
-                        ERR = readFile('err').trim()
+                        ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
                         error('Failed')
                     }
@@ -58,8 +58,10 @@ pipeline {
         }
     }
     post {
+        always {
+            sh 'cat result'
+        }
         failure {
-            sh 'cat err'
             discordSend title: "**:boom: ${env.JOB_NAME} Failure in ${CURR} Stage**",
                         description: "*${CMD}*\n\n${ERR}",
                         footer: "Follow title URL for full console output",
