@@ -34,11 +34,9 @@ namespace REST
             services.AddControllers();
             services.AddScoped<IClientRepo, ClientRepo>();
             services.AddScoped<INeedRepo, NeedRepo>();
-            services.AddScoped<IOwnerRepo, OwnerRepo>();
+            // services.AddScoped<IOwnerRepo, OwnerRepo>();
 
-
-
-            //services.AddDbContext<BatchesDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "TestDatabase"));
+            // services.AddDbContext<BatchesDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "TestDatabase"));
 
             // TODO use when psql database is good to use
 
