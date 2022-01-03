@@ -14,8 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using REST.DataLayer;
 using Microsoft.OpenApi.Models;
-using REST.BusinessLayer;
+using REST.DataLayer.Interfaces;
 using FluentValidation.AspNetCore;
+using REST.Models;
 
 namespace REST
 {

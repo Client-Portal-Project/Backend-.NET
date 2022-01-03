@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using REST.BusinessLayer;
+using REST.DataLayer.Interfaces;
 using REST.DataLayer;
 using REST.Models;
 using System;
@@ -20,7 +20,7 @@ namespace REST.Controllers
         private readonly IClientRepo _crepo;
         private readonly ILogger<ClientController> _logger;
 
-        public ClientController(IClientRepo crepo, ILogger<ClientController> logger) 
+        public ClientController(IGenericRepo<Client> gen_crepo, IClientRepo crepo, ILogger<ClientController> logger) 
         {
             _crepo = crepo;
             _logger = logger;
@@ -34,7 +34,7 @@ namespace REST.Controllers
         [HttpGet]
         public async Task<ActionResult<Client>> Get()
         {
-            var clients = await _crepo.GetClients();
+            var clients = await _crepo.GetAll();
             return Ok(clients);
         }
 
@@ -47,7 +47,7 @@ namespace REST.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Client client = await _crepo.GetClientsById(id);
+            Client client = await _crepo.GetById(id);
             if (client == null) return NotFound();
             return Ok(client);
         }
@@ -62,7 +62,7 @@ namespace REST.Controllers
         public async Task<IActionResult> Post(Client client)
         {
 
-            return Created("api/AddClient", await _crepo.AddClient(client));
+            return Created("api/AddClient", await _crepo.Add(client));
         }
 
     // PUT api/client/5
@@ -73,10 +73,15 @@ namespace REST.Controllers
     /// <param name="client"></param>
     /// <returns></returns>
     [HttpPut]
-        public async Task<IActionResult> Update(Client client)
+        public IActionResult Update(Client client)
         {
-            Client clientToUpdate = await _crepo.UpdateClients(client);
-            if (clientToUpdate == null) return BadRequest();
+            Client clientToUpdate = _crepo.Update(client);
+
+            //this is async
+            _crepo.Save();
+
+            //there should always be an existing entity
+            //if (clientToUpdate == null) return BadRequest();
             return Ok(clientToUpdate);
         }
 
@@ -86,10 +91,15 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(Client entity)
         {
-            Client client = await _crepo.DeleteClientById(id);
-            if(client == null) return NotFound();
+            _crepo.Delete(entity);
+
+            //this task is async already
+            _crepo.Save();
+
+            // should be pulling an existing entity, should always exist
+            //if(client == null) return NotFound();
             return Ok();
         }
     }

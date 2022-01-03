@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using REST.BusinessLayer;
+using REST.DataLayer.Interfaces;
 using REST.Models;
 using System;
 using System.Collections.Generic;
@@ -14,11 +14,10 @@ namespace REST.Controllers
     [ApiController]
     public class NeedsController : ControllerBase
     {
-
         private readonly INeedRepo _nrepo;
         private readonly ILogger<ClientController> _logger;
 
-        public NeedsController(INeedRepo nrepo, ILogger<ClientController> logger)
+        public NeedsController(IGenericRepo<Need> gen_nrepo, INeedRepo nrepo, ILogger<ClientController> logger)
         {
             _nrepo = nrepo;
             _logger = logger;
@@ -32,7 +31,7 @@ namespace REST.Controllers
         [HttpGet]
         public async Task<ActionResult<Need>> Get()
         {
-            var needs = await _nrepo.GetNeeds();
+            var needs = await _nrepo.GetAll();
             return Ok(needs);
         }
 
@@ -45,7 +44,7 @@ namespace REST.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Need need = await _nrepo.GetNeedsById(id);
+            Need need = await _nrepo.GetById(id);
             if (need == null) return NotFound();
             return Ok(need);
         }
@@ -60,7 +59,7 @@ namespace REST.Controllers
         public async Task<IActionResult> Post(Need need)
         {
 
-            return Created("api/AddNeed", await _nrepo.AddNeed(need));
+            return Created("api/AddNeed", await _nrepo.Add(need));
         }
 
         // PUT api/client/5
@@ -71,10 +70,13 @@ namespace REST.Controllers
         /// <param name="need"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Update(Need need)
+        public IActionResult Update(Need need)
         {
-            Need updatedneed = await _nrepo.UpdateNeeds(need);
-            if (updatedneed == null) return BadRequest();
+            Need updatedneed = _nrepo.Update(need);
+            //async method
+            _nrepo.Save();
+            //should have an existing entity
+            //if (updatedneed == null) return BadRequest();
             return Ok(updatedneed);
         }
 
@@ -84,10 +86,13 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(Need entity)
         {
-            Need need = await _nrepo.DeleteNeedById(id);
-            if (need == null) return NotFound();
+            _nrepo.Delete(entity);
+            //async
+            _nrepo.Save();
+            //existing entity we're deleting
+            //if (need == null) return NotFound();
             return Ok();
         }
     }
