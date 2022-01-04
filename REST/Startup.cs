@@ -34,6 +34,8 @@ namespace REST
             services.AddControllers();
             services.AddScoped<IClientRepo, ClientRepo>();
             services.AddScoped<INeedRepo, NeedRepo>();
+            services.AddScoped<IUserBL, UserBL>();
+            services.AddScoped<IUserRepo, UserRepo>();
             // services.AddScoped<IOwnerRepo, OwnerRepo>();
 
             // services.AddDbContext<BatchesDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "TestDatabase"));
