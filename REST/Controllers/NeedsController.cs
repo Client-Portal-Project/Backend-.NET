@@ -86,10 +86,10 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Need entity)
+        public async Task<IActionResult> Delete(int id)
         {
+            var entity = await _nrepo.GetById(id);
             _nrepo.Delete(entity);
-            //async
             _nrepo.Save();
             //existing entity we're deleting
             //if (need == null) return NotFound();

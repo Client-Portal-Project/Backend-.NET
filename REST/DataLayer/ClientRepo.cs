@@ -16,5 +16,15 @@ namespace REST.DataLayer
         {
             _context = context;
         }
+
+        // example with nav props
+        public Client GetByIdWithNavProps(int id)
+        {
+            var client = _context.Clients
+                .Include(c => c.ClientUsers)
+                .Include(c => c.Needs)
+                .Single(c => c.ClientId.Equals(id));
+            return client;
+        }
     }
 }

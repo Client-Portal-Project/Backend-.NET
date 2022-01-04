@@ -91,11 +91,10 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Client entity)
+        public async Task<IActionResult> Delete(int id)
         {
+            var entity = await _crepo.GetById(id);
             _crepo.Delete(entity);
-
-            //this task is async already
             _crepo.Save();
 
             // should be pulling an existing entity, should always exist
