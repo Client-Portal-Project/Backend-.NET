@@ -25,7 +25,6 @@ namespace REST.DataLayer
 /// <returns>Owner owner</returns>
         public async Task<Owner> CreateOwnerAsync(Owner owner)
         {
-            Console.WriteLine(owner);
             _context.Owners.Add(owner);
             await _context.SaveChangesAsync();
             return owner;

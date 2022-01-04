@@ -21,12 +21,10 @@ namespace REST.Controllers
         [HttpPost]
         public async Task<IActionResult> PostOwnerAsync(Owner owner)
         {
-            Console.WriteLine(owner);
             if (owner == null)
             {
                 throw new System.ArgumentNullException(nameof(owner));
             }
-            Owner newOwner = await _ownerRepo.CreateOwnerAsync(owner);
             return Created("api/AddOwner", await _ownerRepo.CreateOwnerAsync(owner));
         }
 
