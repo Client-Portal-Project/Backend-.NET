@@ -34,8 +34,8 @@ namespace REST.Controllers
         [HttpGet]
         public async Task<ActionResult<ApplicantOccupation>> Get()
         {
-            var ApplicantOccupations = await _orepo.GetAll();
-            return Ok(ApplicantOccupations);
+            var appOccupations = await _orepo.GetAll();
+            return Ok(appOccupations);
         }
 
         // GET api/post/5
@@ -47,9 +47,9 @@ namespace REST.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var ApplicantOccupation = await _orepo.GetById(id);
-            if (ApplicantOccupation == null) return NotFound();
-            return Ok(ApplicantOccupation);
+            var appOccupation = await _orepo.GetById(id);
+            if (appOccupation == null) return NotFound();
+            return Ok(appOccupation);
         }
 
         // POST api/ApplicantOccupation
