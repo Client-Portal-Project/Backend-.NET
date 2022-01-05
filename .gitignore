@@ -820,3 +820,4 @@ BELBAngular/appsettings.json
 BELBAngular/appsettings.json
 /auth0stuff
 .vscode
+/package-lock.json
