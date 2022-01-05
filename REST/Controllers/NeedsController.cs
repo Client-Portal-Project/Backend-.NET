@@ -56,10 +56,11 @@ namespace REST.Controllers
         /// <param name="need"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post(Need need)
+        public IActionResult Post(Need entity)
         {
-
-            return Created("api/AddNeed", await _nrepo.Add(need));
+            _nrepo.Add(entity);
+            this.SaveThread();
+            return Created("api/AddNeed", entity);
         }
 
         // PUT api/client/5
@@ -72,12 +73,12 @@ namespace REST.Controllers
         [HttpPut]
         public IActionResult Update(Need need)
         {
-            Need updatedneed = _nrepo.Update(need);
+            _nrepo.Update(need);
             //async method
-            _nrepo.Save();
+            this.SaveThread();
             //should have an existing entity
             //if (updatedneed == null) return BadRequest();
-            return Ok(updatedneed);
+            return Ok(need);
         }
 
         // <summary>
@@ -86,14 +87,18 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(Need entity)
         {
-            var entity = await _nrepo.GetById(id);
             _nrepo.Delete(entity);
-            _nrepo.Save();
+            this.SaveThread();
             //existing entity we're deleting
             //if (need == null) return NotFound();
             return Ok();
+        }
+
+        public async void SaveThread()
+        {
+            await _nrepo.Save();
         }
     }
 }

@@ -1,115 +1,107 @@
-// Depreciated, to be refactored for ApplicationOccupationController ***
-
-/* using System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using REST.DataLayer.Interfaces;
+using REST.DataLayer;
+using REST.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using REST.BusinessLayer;
-using REST.DataLayer;
-using REST.Models;
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+// Revisit, ensure the Controller applies to our entity model, refactor if needed
 namespace REST.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class OccupationController : ControllerBase
     {
-        private readonly IOccupationBL _OccupationBL;
+        private readonly IOccupationRepo _orepo;
+        private readonly ILogger<OccupationController> _logger;
 
-        public OccupationController(IOccupationBL OccupationBL)
+        public OccupationController(IGenericRepo<Occupation> gen_orepo, IOccupationRepo crepo, ILogger<OccupationController> logger) 
         {
-            _OccupationBL = OccupationBL;
-
+            _orepo = crepo;
+            _logger = logger;
         }
 
-        ///<summary>
-        ///Returns all Occupations as a List
-        ///</summary>
+        // GET: api/Occupations
+        /// <summary>
+        /// Get's all Occupations
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOccupations()
+        public async Task<ActionResult<Occupation>> Get()
         {
-            return Ok(await _OccupationBL.GetOccupations());
-        }
-
-        ///<summary>
-        ///Returns a single Occupation based on an ID
-        ///</summary>
-        ///<param name="id"></param>
-        [HttpGet("FindOccupationById/{OccupationId}")]
-        public async Task<IActionResult> FindOccupationById(int OccupationId)
-        {
-            Occupation Occupation = await _OccupationBL.FindOccupationById(OccupationId);
-            if(Occupation == null) return NotFound();
-            return Ok(Occupation);
-
-        }
-
-        /// <summary>
-        /// Returns a single Occupation by its name
-        /// </summary>
-        /// <param name="OccupationName"></param>
-        /// <returns></returns>
-        [HttpGet("FindOccupationByName/{OccupationName}")]
-        public async Task<IActionResult> FindOccupationByName(string OccupationName)
-        {
-            Occupation Occupation = await _OccupationBL.FindOccupationByName(OccupationName);
-            if (Occupation == null) return NotFound();
-            return Ok(Occupation);
-
-
-        }
-
-        /// <summary>
-        /// Returns Occupations which cover a certain topic
-        /// </summary>
-        /// <param name="topicId"></param>
-        /// <returns></returns>
-        [HttpGet("FindOccupationsByTopicId/{TopicId}")]
-        public async Task<IActionResult> FindOccupationsByTopicId(int TopicId)
-        {
-            var Occupations = await _OccupationBL.GetOccupationsByTag(TopicId);
-            if (Occupations.Count() == 0) return NotFound();
+            var Occupations = await _orepo.GetAll();
             return Ok(Occupations);
         }
 
-        ///<summary>
-        ///Creates a new Occupation based on the Occupation object given
-        ///</summary>
-        ///<param name="Occupation"></param>
-        [HttpPost]
-        public async Task<IActionResult> CreateOccupation(Occupation Occupation)
+        // GET api/post/5
+        /// <summary>
+        /// GET one Occupations by Occupation ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-
-            return Created("api", await _OccupationBL.AddOccupation(Occupation));
-
-        }
-
-        ///<summary>
-        ///update a Occupation based on the Occupation object given
-        ///</summary>
-        ///<param name="Occupation"></param>
-        [HttpPut]
-        public async Task<IActionResult> UpdateOccupation(Occupation Occupation)
-        {
-            Occupation OccupationToUpdate = await _OccupationBL.UpdateOccupations(Occupation);
-            if (OccupationToUpdate == null) return BadRequest();
-            return Ok(OccupationToUpdate);
-        }
-
-        ///<summary>
-        ///Delete a Occupation based on a given ID
-        ///</summary>
-        ///<param name="id"></param>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOccupation(int id)
-        {
-            Occupation Occupation = await _OccupationBL.DeleteOccupationById(id);
-            if(Occupation == null) return NotFound();
+            var Occupation = await _orepo.GetById(id);
+            if (Occupation == null) return NotFound();
             return Ok(Occupation);
-
         }
 
+        // POST api/Occupation
+        /// <summary>
+        /// Create a Occupation
+        /// </summary>
+        /// <param name="Occupation"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Post(Occupation entity)
+        {
+            _orepo.Add(entity);
+            this.SaveThread();
+            return Created("api/AddOccupation", entity);
+        }
+
+    // PUT api/Occupation/5
+    /// <summary>
+    /// Update Occupation
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="Occupation"></param>
+    /// <returns></returns>
+    [HttpPut]
+        public IActionResult Update(Occupation entity)
+        {
+            _orepo.Update(entity);
+            //this is async
+            this.SaveThread();
+            //there should always be an existing entity
+            //if (OccupationToUpdate == null) return BadRequest();
+            return Ok(entity);
+        }
+
+        // <summary>
+        /// Delete Occupation 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Occupation entity)
+        {
+            _orepo.Delete(entity);
+            this.SaveThread();
+            // should be pulling an existing entity, should always exist
+            //if(Occupation == null) return NotFound();
+            return Ok();
+        }
+
+        public async void SaveThread()
+        {
+            await _orepo.Save();
+        }
     }
-} */
+}

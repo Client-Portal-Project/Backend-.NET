@@ -1,94 +1,107 @@
-// Depreciated, to be refactored as NeedController ***
-
-/* using System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using REST.DataLayer.Interfaces;
+using REST.DataLayer;
+using REST.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using REST.BusinessLayer;
-using REST.DataLayer;
-using REST.Models;
 
-// namespace REST.Controllers
-// {
-//     [ApiController]
-//     [Route("[controller]")]
-//     public class OrderController : ControllerBase
-//     {
-//         private readonly IOrderBL _orderBL;
-//         public OrderController(IOrderBL orderBL)
-//         {
-//             _orderBL = orderBL;
-//         }
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-//         ///<summary>
-//         ///Returns all orders as a List
-//         ///</summary>
-//         [HttpGet]
-//         public async Task<IActionResult> GetOrders()
-//         {
-//             return Ok(await _orderBL.GetOrders());
-//         }
+// Revisit, ensure the Controller applies to our entity model, refactor if needed
+namespace REST.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OrderController : ControllerBase
+    {
+        private readonly IOrderRepo _orepo;
+        private readonly ILogger<OrderController> _logger;
 
-//         ///<summary>
-//         ///Returns a single order based on an ID
-//         ///</summary>
-//         ///<param name="id"></param>
-//         [HttpGet("{id}")]
-//         public async Task<IActionResult> GetOrdersById(int id)
-//         {
-//             Order order = await _orderBL.GetOrdersById(id);
-//             if(order == null) return NotFound();
-//             return Ok(order);
-//         }
+        public OrderController(IGenericRepo<Order> gen_orepo, IOrderRepo crepo, ILogger<OrderController> logger) 
+        {
+            _orepo = crepo;
+            _logger = logger;
+        }
 
-//         ///<summary>
-//         ///Returns a orders from a specific based on a client ID
-//         ///</summary>
-//         ///<param name="id"></param>
-//         [HttpGet("GetOrdersByClientId/{ClientId}")]
-//         public async Task<IActionResult> GetOrdersByClientId(int ClientId)
-//         {
-//             List<Order> order = await _orderBL.GetOrdersByClientId(ClientId);
-//             if (order.Count() == 0) return NotFound();
-//             return Ok(order);
-//         }
+        // GET: api/Orders
+        /// <summary>
+        /// Get's all Orders
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<Order>> Get()
+        {
+            var Orders = await _orepo.GetAll();
+            return Ok(Orders);
+        }
 
-//         ///<summary>
-//         ///Creates a new order based on the order object given
-//         ///</summary>
-//         ///<param name="clients"></param>
-//         ///<param name="orderDetails"></param>
-//         [HttpPost]
-//         public async Task<IActionResult> CreateOrder(Order order)
-//         {
-//             return Created("api", await _orderBL.PlaceOrder(order));
-//         }
+        // GET api/post/5
+        /// <summary>
+        /// GET one Orders by Order ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var Order = await _orepo.GetById(id);
+            if (Order == null) return NotFound();
+            return Ok(Order);
+        }
 
-//         ///<summary>
-//         ///update a order based on the order object given
-//         ///</summary>
-//         ///<param name="order"></param>
-//         [HttpPut]
-//         public async Task<IActionResult> UpdateOrder(Order order)
-//         {
-//             Order orderToUpdate = await _orderBL.UpdateOrders(order);
-//             if (orderToUpdate == null) return BadRequest();
-//             return Ok(orderToUpdate);
-//         }
+        // POST api/Order
+        /// <summary>
+        /// Create a Order
+        /// </summary>
+        /// <param name="Order"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Post(Order entity)
+        {
+            _orepo.Add(entity);
+            this.SaveThread();
+            return Created("api/AddOrder", entity);
+        }
 
-//         ///<summary>
-//         ///Delete a order based on a given ID
-//         ///</summary>
-//         ///<param name="id"></param>
-//         [HttpDelete("{id}")]
-//         public async Task<IActionResult> DeleteOrder(int id)
-//         {
-//             Order order = await _orderBL.DeleteOrderById(id);
-//             if(order == null) return NotFound();
-//             return Ok(order);
-//         }
+    // PUT api/Order/5
+    /// <summary>
+    /// Update Order
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="Order"></param>
+    /// <returns></returns>
+    [HttpPut]
+        public IActionResult Update(Order entity)
+        {
+            _orepo.Update(entity);
+            //this is async
+            this.SaveThread();
+            //there should always be an existing entity
+            //if (OrderToUpdate == null) return BadRequest();
+            return Ok(entity);
+        }
 
+        // <summary>
+        /// Delete Order 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Order entity)
+        {
+            _orepo.Delete(entity);
+            this.SaveThread();
+            // should be pulling an existing entity, should always exist
+            //if(Order == null) return NotFound();
+            return Ok();
+        }
+
+        public async void SaveThread()
+        {
+            await _orepo.Save();
+        }
     }
-} */
+}

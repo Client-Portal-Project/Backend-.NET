@@ -18,9 +18,9 @@ namespace REST.DataLayer
             _context = context;
         }
 
-        public async Task<TEntity> Add(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
-            await _context.Set<TEntity>().AddAsync(entity);
+            _context.Set<TEntity>().Add(entity);
             return entity;
         }
 
@@ -49,9 +49,10 @@ namespace REST.DataLayer
 
         // Save is implemented separately so you can perform multiple ops with one
         // db query
-        public async void Save()
+        public async Task<string> Save()
         {
             await _context.SaveChangesAsync();
+            return "Changes saved";
         }
     }
 }

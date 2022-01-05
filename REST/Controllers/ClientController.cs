@@ -47,7 +47,7 @@ namespace REST.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Client client = await _crepo.GetById(id);
+            var client = await _crepo.GetById(id);
             if (client == null) return NotFound();
             return Ok(client);
         }
@@ -59,10 +59,11 @@ namespace REST.Controllers
         /// <param name="client"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post(Client client)
+        public IActionResult Post(Client entity)
         {
-
-            return Created("api/AddClient", await _crepo.Add(client));
+            _crepo.Add(entity);
+            this.SaveThread();
+            return Created("api/AddClient", entity);
         }
 
     // PUT api/client/5
@@ -73,16 +74,14 @@ namespace REST.Controllers
     /// <param name="client"></param>
     /// <returns></returns>
     [HttpPut]
-        public IActionResult Update(Client client)
+        public IActionResult Update(Client entity)
         {
-            Client clientToUpdate = _crepo.Update(client);
-
+            _crepo.Update(entity);
             //this is async
-            _crepo.Save();
-
+            this.SaveThread();
             //there should always be an existing entity
             //if (clientToUpdate == null) return BadRequest();
-            return Ok(clientToUpdate);
+            return Ok(entity);
         }
 
         // <summary>
@@ -91,15 +90,18 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(Client entity)
         {
-            var entity = await _crepo.GetById(id);
             _crepo.Delete(entity);
-            _crepo.Save();
-
+            this.SaveThread();
             // should be pulling an existing entity, should always exist
             //if(client == null) return NotFound();
             return Ok();
+        }
+
+        public async void SaveThread()
+        {
+            await _crepo.Save();
         }
     }
 }
