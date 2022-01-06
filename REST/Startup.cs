@@ -32,6 +32,7 @@ namespace REST
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IApplicationRepo, ApplicationRepo>();
             services.AddScoped<IClientRepo, ClientRepo>();
             services.AddScoped<INeedRepo, NeedRepo>();
             services.AddScoped<IUserBL, UserBL>();
