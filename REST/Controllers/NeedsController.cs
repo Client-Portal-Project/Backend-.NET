@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using REST.DataLayer.Interfaces;
-using REST.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace REST.Controllers
+namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,7 +17,7 @@ namespace REST.Controllers
         private readonly INeedRepo _nrepo;
         private readonly ILogger<ClientController> _logger;
 
-        public NeedsController(IGenericRepo<Need> gen_nrepo, INeedRepo nrepo, ILogger<ClientController> logger)
+        public NeedsController(INeedRepo nrepo, ILogger<ClientController> logger)
         {
             _nrepo = nrepo;
             _logger = logger;
@@ -59,7 +59,7 @@ namespace REST.Controllers
         public IActionResult Post(Need entity)
         {
             _nrepo.Add(entity);
-            this.SaveThread();
+            _nrepo.Save();
             return Created("api/AddNeed", entity);
         }
 
@@ -75,7 +75,7 @@ namespace REST.Controllers
         {
             _nrepo.Update(need);
             //async method
-            this.SaveThread();
+            _nrepo.Save();
             //should have an existing entity
             //if (updatedneed == null) return BadRequest();
             return Ok(need);
@@ -90,15 +90,10 @@ namespace REST.Controllers
         public IActionResult Delete(Need entity)
         {
             _nrepo.Delete(entity);
-            this.SaveThread();
+            _nrepo.Save();
             //existing entity we're deleting
             //if (need == null) return NotFound();
             return Ok();
-        }
-
-        public async void SaveThread()
-        {
-            await _nrepo.Save();
         }
     }
 }

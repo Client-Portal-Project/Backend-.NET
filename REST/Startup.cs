@@ -12,11 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using REST.DataLayer;
 using Microsoft.OpenApi.Models;
-using REST.DataLayer.Interfaces;
 using FluentValidation.AspNetCore;
-using REST.Models;
+using Models;
+using DataLayer;
 
 namespace REST
 {
@@ -35,19 +34,18 @@ namespace REST
             services.AddControllers();
             services.AddScoped<IClientRepo, ClientRepo>();
             services.AddScoped<INeedRepo, NeedRepo>();
+            services.AddScoped<IApplicantOccupationRepo, ApplicantOccupationRepo>();
             // services.AddScoped<IOwnerRepo, OwnerRepo>();
 
             // services.AddDbContext<BatchesDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "TestDatabase"));
 
             // TODO use when psql database is good to use
 
-              services.AddDbContext<BatchesDBContext>(opts => opts.UseNpgsql(Configuration.GetConnectionString("batchesDB")));
-
-            
+            services.AddDbContext<BatchesDBContext>(opts => opts.UseNpgsql(Configuration.GetConnectionString("batchesDB")));
 
             services.AddSingleton(_ => Configuration);
 
-            services.AddFluentValidation(cfg => 
+            services.AddFluentValidation(cfg =>
             {
                 cfg.DisableDataAnnotationsValidation = true;
                 cfg.RegisterValidatorsFromAssemblyContaining<Startup>();
@@ -57,6 +55,20 @@ namespace REST
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Client_Portal", Version = "v1" });
             });
+
+            services.AddCors(
+                (options) =>
+                {
+                    options.AddPolicy(name: "_myAllowSpecificOrigins",
+                        builder =>
+                        {
+                            builder.WithOrigins("http://localhost:4200/")
+                            .AllowAnyHeader()
+                            .WithMethods("GET", "POST", "PUT", "DELETE")
+                            .WithExposedHeaders("*");
+                        });
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,9 +84,10 @@ namespace REST
             }
 
             // TODO: for security, make sure this is more defined later on
-            app.UseCors(opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            //app.UseCors(opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-            if (env.IsDevelopment()){
+            if (env.IsDevelopment())
+            {
                 app.UseHttpsRedirection();
             }
 

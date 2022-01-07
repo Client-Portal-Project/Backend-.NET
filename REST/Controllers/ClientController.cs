@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using REST.DataLayer.Interfaces;
-using REST.DataLayer;
-using REST.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 // Revisit, ensure the Controller applies to our entity model, refactor if needed
-namespace REST.Controllers
+namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,7 +19,7 @@ namespace REST.Controllers
         private readonly IClientRepo _crepo;
         private readonly ILogger<ClientController> _logger;
 
-        public ClientController(IGenericRepo<Client> gen_crepo, IClientRepo crepo, ILogger<ClientController> logger) 
+        public ClientController(IClientRepo crepo, ILogger<ClientController> logger) 
         {
             _crepo = crepo;
             _logger = logger;
@@ -62,7 +61,7 @@ namespace REST.Controllers
         public IActionResult Post(Client entity)
         {
             _crepo.Add(entity);
-            this.SaveThread();
+            _crepo.Save();
             return Created("api/AddClient", entity);
         }
 
@@ -78,7 +77,7 @@ namespace REST.Controllers
         {
             _crepo.Update(entity);
             //this is async
-            this.SaveThread();
+            _crepo.Save();
             //there should always be an existing entity
             //if (clientToUpdate == null) return BadRequest();
             return Ok(entity);
@@ -93,15 +92,10 @@ namespace REST.Controllers
         public IActionResult Delete(Client entity)
         {
             _crepo.Delete(entity);
-            this.SaveThread();
+            _crepo.Save();
             // should be pulling an existing entity, should always exist
             //if(client == null) return NotFound();
             return Ok();
-        }
-
-        public async void SaveThread()
-        {
-            await _crepo.Save();
         }
     }
 }
