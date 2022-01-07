@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using REST.BusinessLayer;
-using REST.DataLayer;
-using REST.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 // Revisit, ensure the Controller applies to our entity model, refactor if needed
-namespace REST.Controllers
+namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,7 +33,7 @@ namespace REST.Controllers
         [HttpGet]
         public async Task<ActionResult<Client>> Get()
         {
-            var clients = await _crepo.GetClients();
+            var clients = await _crepo.GetAll();
             return Ok(clients);
         }
 
@@ -47,7 +46,7 @@ namespace REST.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Client client = await _crepo.GetClientsById(id);
+            var client = await _crepo.GetById(id);
             if (client == null) return NotFound();
             return Ok(client);
         }
@@ -59,10 +58,11 @@ namespace REST.Controllers
         /// <param name="client"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post(Client client)
+        public IActionResult Post(Client entity)
         {
-
-            return Created("api/AddClient", await _crepo.AddClient(client));
+            _crepo.Add(entity);
+            _crepo.Save();
+            return Created("api/AddClient", entity);
         }
 
     // PUT api/client/5
@@ -73,11 +73,14 @@ namespace REST.Controllers
     /// <param name="client"></param>
     /// <returns></returns>
     [HttpPut]
-        public async Task<IActionResult> Update(Client client)
+        public IActionResult Update(Client entity)
         {
-            Client clientToUpdate = await _crepo.UpdateClients(client);
-            if (clientToUpdate == null) return BadRequest();
-            return Ok(clientToUpdate);
+            _crepo.Update(entity);
+            //this is async
+            _crepo.Save();
+            //there should always be an existing entity
+            //if (clientToUpdate == null) return BadRequest();
+            return Ok(entity);
         }
 
         // <summary>
@@ -86,10 +89,12 @@ namespace REST.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(Client entity)
         {
-            Client client = await _crepo.DeleteClientById(id);
-            if(client == null) return NotFound();
+            _crepo.Delete(entity);
+            _crepo.Save();
+            // should be pulling an existing entity, should always exist
+            //if(client == null) return NotFound();
             return Ok();
         }
     }
