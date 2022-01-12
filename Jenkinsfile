@@ -67,7 +67,7 @@ pipeline {
                 script {
                     CURR = 'Static Analysis'
                     CMD = '''$SCAN/bin/sonar-scanner -Dsonar.organization=$ORG \
-                            -Dsonar.projectKey=$NAME -Dsonar.sources=./src/ \
+                            -Dsonar.projectKey=$NAME -Dsonar.sources=. \
                             -Dsonar.sourceEncoding=UTF-8'''
                 }
                 withSonarQubeEnv('sonarserve') {
