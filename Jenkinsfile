@@ -56,6 +56,35 @@ pipeline {
                 discordSend description: ":tools: Built Files for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
             }
         }
+
+        stage('Static Analysis') {
+            environment {
+                SCAN = tool 'sonarcloud'
+                ORG = "client-portal-project"
+                NAME = "Backend-.NET"
+            }
+            steps {
+                script {
+                    CURR = 'Static Analysis'
+                    CMD = '''$SCAN/bin/sonar-scanner -Dsonar.organization=$ORG \
+                            -Dsonar.projectKey=$NAME -Dsonar.sources=./src/ \
+                            -Dsonar.sourceEncoding=UTF-8'''
+                }
+                withSonarQubeEnv('sonarserve') {
+                    sh(script: CMD)
+                }
+                timeout(time: 5, unit: 'MINUTES') {
+                    script{
+                        ERR = waitForQualityGate()
+                        if (ERR.status != 'OK') {
+                            writeFile(file: 'result', text: "${ERR}")
+                            error('Quality Gate Failed')
+                        }
+                    }
+                }
+                discordSend description: ":unlock: Passed Static Analysis of ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
+            }
+        }
     }
     post {
         always {
