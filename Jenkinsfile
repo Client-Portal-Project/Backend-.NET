@@ -11,6 +11,10 @@ pipeline {
 
     tools {dotnetsdk 'dotnet'}
 
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('clientportalx-dockerhub')
+    }
+
     stages {
         stage('Restore Package') {
             steps {
@@ -83,6 +87,31 @@ pipeline {
                     }
                 }
                 discordSend description: ":unlock: Passed Static Analysis of ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
+            }
+        }
+
+        stage('Docker Image Build'){
+            steps {
+                script {
+                    CURR = "Docker Image"
+                    CMD = "docker build -t clientportalx/dotnet-backend:latest . > result"
+                }
+                sh (script: CMD)
+                discordSend description: ":whale2: Built Docker Image for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_DOCK
+            }
+        }
+
+        stage("Login to Docker Hub"){
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                discordSend description: ":key: Successfully logged into Dockerhub for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_DOCK
+            }
+        }
+
+        stage('Push to Docker Hub'){
+            steps {
+                sh 'docker image push clientportalx/angular-frontend:latest'
+                discordSend description: ":whale: Pushed Docker Image to Dockerhub for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_DOCK
             }
         }
     }
