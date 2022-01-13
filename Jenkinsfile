@@ -16,6 +16,18 @@ pipeline {
     }
 
     stages {
+
+        stage('Unit Test') {
+            steps {
+                script{
+                    CURR = "Unit Testing"
+                    CMD = 'dotnet test > result'
+                    sh (script: CMD)
+                }
+                discordSend description: ":memo: Successfully Passed Tests for ${JOB_NAME}", result: currentBuild.currentResult, webhookURL: WEBHO_NET
+            }
+        }
+
         stage('Restore Package') {
             steps {
                 script { 
@@ -90,6 +102,26 @@ pipeline {
             }
         }
 
+        // Testing if this will correctly input code to sonarcloud
+        stage('Build + SonarQube analysis') {
+            def sqScannerMsBuildHome = tool 'Scanner for MSBuild 4.6'
+            withSonarQubeEnv('sonarserve') {
+                bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:Backend-.NET /o:client-portal-project"
+                bat 'MSBuild.exe /t:Rebuild'
+                bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe end"
+            }
+            timeout(time: 5, unit: 'MINUTES') {
+                    script{
+                        ERR = waitForQualityGate()
+                        if (ERR.status != 'OK') {
+                            writeFile(file: 'result', text: "${ERR}")
+                            error('Quality Gate Failed')
+                        }
+                    }
+                }
+                discordSend description: ":unlock: Passed Static Analysis of ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_NET
+        }
+
         stage('Docker Image Build'){
             steps {
                 script {
@@ -110,14 +142,18 @@ pipeline {
 
         stage('Push to Docker Hub'){
             steps {
-                sh 'docker image push clientportalx/angular-frontend:latest'
-                discordSend description: ":whale: Pushed Docker Image to Dockerhub for ${env.JOB_NAME}", result: currentBuild.currentResult, webhookURL: env.WEBHO_DOCK
+                sh 'docker image push clientportalx/dotnet-backend:latest'
+                discordSend title: ":whale: Pushed Docker Image to Dockerhub for ${env.JOB_NAME}", 
+                            link: "https://hub.docker.com/repository/docker/clientportalx/dotnet-backend",
+                            result: currentBuild.currentResult, 
+                            webhookURL: env.WEBHO_DOCK
             }
         }
     }
     post {
         always {
             sh 'cat result'
+            sh 'docker logout'
         }
         failure {
             discordSend title: "**:boom: ${env.JOB_NAME} Failure in ${CURR} Stage**",
