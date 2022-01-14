@@ -67,16 +67,16 @@ pipeline {
 
         stage('Static Analysis') {
             environment {
-                SCAN = tool 'sonarcloud'
+                SCAN = tool 'dotnet-scanner'
                 ORG = "client-portal-project"
                 NAME = "Backend-.NET"
             }
             steps {
                 script {
                     CURR = 'Static Analysis'
-                    CMD = '''dotnet-sonarscanner begin /k:$NAME /o:$ORG \
+                    CMD = '''$SCAN/bin/dotnet-sonarscanner begin /k:$NAME /o:$ORG \
                             dotnet build Backend-NET.sln \
-                            dotnet-sonarscanner end '''
+                            $SCAN/bin/dotnet-sonarscanner end '''
                 }
                 withSonarQubeEnv('sonarserve') {
                     sh(script: CMD)
