@@ -38,6 +38,10 @@ JWT
 
 The Client Portal Application is designed for employers to be matched quickly to the perfect personnel to meet the companies needs.
 
+## Setup Notes For Development:
+  - Check the ProjectX Discord for the appsettings.json file to connect to database.
+  - When You pick a controller/user stoy to work on, please assign yourself to the associated Trello card.
+
 ## Postman Link
 
 - Click the link below to view current Postman documentation. You can also fork the documents to run your own tests and api calls.
