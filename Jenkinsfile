@@ -74,7 +74,7 @@ pipeline {
             steps {
                 script {
                     CURR = 'Static Analysis'
-                    CMD = '''dotnet tool install dotnet-sonarscanner
+                    CMD = '''dotnet tool install --global dotnet-sonarscanner
                             dotnet sonarscanner begin /k:$NAME /o:$ORG 
                             dotnet build Backend-NET.sln
                             dotnet sonarscanner end'''
