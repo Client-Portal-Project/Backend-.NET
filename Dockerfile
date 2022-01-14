@@ -4,10 +4,15 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["REST.csproj", "./"]
-RUN dotnet restore "REST.csproj"
+COPY *.sln ./
+COPY REST/*.csproj REST/
+COPY Models/*.csproj Models/
+COPY BusinessLayer/*.csproj BusinessLayer/
+COPY DataLayer/*.csproj DataLayer/
+
+RUN cd REST && dotnet restore
 COPY . .
-RUN dotnet publish "REST.csproj" -c Release -o /app/publish
+RUN dotnet publish REST -c Release -o /app/publish --no-restore
 
 FROM base AS final
 WORKDIR /app
