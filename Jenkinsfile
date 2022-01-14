@@ -47,10 +47,14 @@ pipeline {
         }
 
         stage('Build') {
+            environment {
+                ORG = "client-portal-project"
+                NAME = "Backend-.NET"
+            }
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = 'dotnet build Backend-NET.sln --configuration Release --no-restore > result'
+                    CMD = "dotnet build Backend-NET.sln --configuration Release --no-restore > result"
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
@@ -70,9 +74,10 @@ pipeline {
             steps {
                 script {
                     CURR = 'Static Analysis'
-                    CMD = '''$SCAN/bin/sonar-scanner -Dsonar.organization=$ORG \
-                            -Dsonar.projectKey=$NAME -Dsonar.sources=. \
-                            -Dsonar.sourceEncoding=UTF-8'''
+                    CMD = '''dotnet tool install --global dotnet-sonarscanner
+                            dotnet sonarscanner begin /k:$NAME /o:$ORG
+                            dotnet build Backend-NET.sln
+                            dotnet sonarscanner end '''
                 }
                 withSonarQubeEnv('sonarserve') {
                     sh(script: CMD)
