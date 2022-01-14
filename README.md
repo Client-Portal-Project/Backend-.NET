@@ -40,7 +40,7 @@ The Client Portal Application is designed for employers to be matched quickly to
 
 ## Setup Notes For Development:
   - Check the ProjectX Discord for the appsettings.json file to connect to database.
-  - When You pick a controller/user stoy to work on, please assign yourself to the associated Trello card.
+  - When You pick a controller/user stroy to work on, please assign yourself to the associated Trello card.
 
 ## Postman Link
 
