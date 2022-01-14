@@ -74,9 +74,9 @@ pipeline {
             steps {
                 script {
                     CURR = 'Static Analysis'
-                    CMD = '''$SCAN/bin/dotnet-sonarscanner begin /k:$NAME /o:$ORG \
+                    CMD = '''$SCAN/SonarScanner.MSBuild.dll begin /k:$NAME /o:$ORG \
                             dotnet build Backend-NET.sln \
-                            $SCAN/bin/dotnet-sonarscanner end '''
+                            $SCAN/SonarScanner.MSBuild.dll end '''
                 }
                 withSonarQubeEnv('sonarserve') {
                     sh(script: CMD)
