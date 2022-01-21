@@ -5,12 +5,12 @@
 <img alt="Sonar Cloud" src="https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg" />
 </p>
 <p align="center">
-<img alt="Quality Gate" src="https://sonarcloud.io/api/project_badges/measure?project=RVTR-StagingRemote_Staging-Project-Front-End&metric=alert_status" />
-<img alt="Security" src="https://sonarcloud.io/api/project_badges/measure?project=RVTR-StagingRemote_Staging-Project-Front-End&metric=security_rating" />
+<img alt="Quality Gate" src="https://sonarcloud.io/api/project_badges/measure?project=Backend-.NET&metric=alert_status" />
+<img alt="Security" src="https://sonarcloud.io/api/project_badges/measure?project=Backend-.NET&metric=security_rating" />
 <br/>
-<img alt="Bugs" src="https://sonarcloud.io/api/project_badges/measure?project=RVTR-StagingRemote_Staging-Project-Front-End&metric=bugs" />
-<img alt="Line of Code" src="https://sonarcloud.io/api/project_badges/measure?project=RVTR-StagingRemote_Staging-Project-Front-End&metric=ncloc" />
-<img alt="Vulnerabilities" src="https://sonarcloud.io/api/project_badges/measure?project=RVTR-StagingRemote_Staging-Project-Front-End&metric=vulnerabilities" />
+<img alt="Bugs" src="https://sonarcloud.io/api/project_badges/measure?project=Backend-.NET&metric=bugs" />
+<img alt="Line of Code" src="https://sonarcloud.io/api/project_badges/measure?project=Backend-.NET&metric=ncloc" />
+<img alt="Vulnerabilities" src="https://sonarcloud.io/api/project_badges/measure?project=Backend-.NET&metric=vulnerabilities" />
 </p>
 
 ## Tech Stack
