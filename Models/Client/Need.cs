@@ -33,7 +33,6 @@ namespace Models
 
         }
     }
-}
 
 public class NeedsValidator : AbstractValidator<Need>
 {
@@ -70,5 +69,6 @@ public class NeedsValidator : AbstractValidator<Need>
             .MaximumLength(30)
             .WithMessage("Must be 30 characters or less");
             
+        }
     }
 }
