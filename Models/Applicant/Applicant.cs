@@ -34,11 +34,6 @@ namespace Models
     {
         public ApplicantsValidator()
         {
-            // RuleFor(c => c.AboutMe)
-            //   .NotNull()
-            //   .Length(2, 50)
-            //   .WithMessage("Must be inbetween 2 and 50 characters");
-
             RuleFor(c => c.EducationLevel)
               .NotNull()
               .Length(2, 50)

@@ -76,8 +76,6 @@ namespace Controllers
             _nrepo.Update(need);
             //async method
             _nrepo.Save();
-            //should have an existing entity
-            //if (updatedneed == null) return BadRequest();
             return Ok(need);
         }
 
@@ -91,8 +89,6 @@ namespace Controllers
         {
             _nrepo.Delete(entity);
             _nrepo.Save();
-            //existing entity we're deleting
-            //if (need == null) return NotFound();
             return Ok();
         }
     }

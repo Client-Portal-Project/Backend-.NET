@@ -34,41 +34,37 @@ namespace Models
         }
     }
 
-public class NeedsValidator : AbstractValidator<Need>
-{
-    public NeedsValidator()
+    public class NeedsValidator : AbstractValidator<Need>
     {
-        RuleFor(n => n.AmountNeeded)
-          .NotNull()
-          // Less than able to be changed to any reasonable number
-          .LessThan(50)
-          .WithMessage("Must a reasonably sized number")
-          .GreaterThan(0)
-          .WithMessage("Need must be at least 1");
-        RuleFor(n => n.AmountFulfilled)
-            .NotNull()
-            .GreaterThanOrEqualTo(0);
-        RuleFor(n => n.EducationField)
-            // Nullable in case someone has more experience and little or no education
-            .MaximumLength(30)
-            .WithMessage("Must be less than 30 characters");
-        RuleFor(n => n.YearsExperience)
-            .NotNull()
-            .GreaterThanOrEqualTo(1);
-        RuleFor(n => n.ExtraDescription)
-            .NotNull()
-            // Max length placeholder value. Can be changed as needed to be reasonable length
-            .Length(2, 1000)
-            .WithMessage("Length must be between 2 and 1000 characters");
-        RuleFor(n => n.JobTitle)
-            .NotNull()
-            .Length(2, 30)
-            .WithMessage("Length must be between 2 and 1000 characters");
-        RuleFor(n => n.EducationLevel)
-            // Left nullable if someone doesnt have degree but does have experience
-            .MaximumLength(30)
-            .WithMessage("Must be 30 characters or less");
-            
+        public NeedsValidator()
+        {
+            RuleFor(n => n.AmountNeeded)
+              .NotNull()
+              .LessThan(50)
+              .WithMessage("Must a reasonably sized number")
+              .GreaterThan(0)
+              .WithMessage("Need must be at least 1");
+            RuleFor(n => n.AmountFulfilled)
+                .NotNull()
+                .GreaterThanOrEqualTo(0);
+            RuleFor(n => n.EducationField)
+                .MaximumLength(30)
+                .WithMessage("Must be less than 30 characters");
+            RuleFor(n => n.YearsExperience)
+                .NotNull()
+                .GreaterThanOrEqualTo(1);
+            RuleFor(n => n.ExtraDescription)
+                .NotNull()
+                .Length(2, 1000)
+                .WithMessage("Length must be between 2 and 1000 characters");
+            RuleFor(n => n.JobTitle)
+                .NotNull()
+                .Length(2, 30)
+                .WithMessage("Length must be between 2 and 1000 characters");
+            RuleFor(n => n.EducationLevel)
+                .MaximumLength(30)
+                .WithMessage("Must be 30 characters or less");
+
         }
     }
 }

@@ -76,10 +76,7 @@ namespace Controllers
         public IActionResult Update(ApplicantOccupation entity)
         {
             _orepo.Update(entity);
-            //this is async
             _orepo.Save();
-            //there should always be an existing entity
-            //if (ApplicantOccupationToUpdate == null) return BadRequest();
             return Ok(entity);
         }
 
@@ -93,8 +90,6 @@ namespace Controllers
         {
             _orepo.Delete(entity);
             _orepo.Save();
-            // should be pulling an existing entity, should always exist
-            //if(ApplicantOccupation == null) return NotFound();
             return Ok();
         }
     }

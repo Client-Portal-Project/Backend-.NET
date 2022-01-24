@@ -19,7 +19,7 @@ namespace Controllers
         private readonly IClientRepo _crepo;
         private readonly ILogger<ClientController> _logger;
 
-        public ClientController(IClientRepo crepo, ILogger<ClientController> logger) 
+        public ClientController(IClientRepo crepo, ILogger<ClientController> logger)
         {
             _crepo = crepo;
             _logger = logger;
@@ -65,21 +65,18 @@ namespace Controllers
             return Created("api/AddClient", entity);
         }
 
-    // PUT api/client/5
-    /// <summary>
-    /// Update Client
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="client"></param>
-    /// <returns></returns>
-    [HttpPut]
+        // PUT api/client/5
+        /// <summary>
+        /// Update Client
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        [HttpPut]
         public IActionResult Update(Client entity)
         {
             _crepo.Update(entity);
-            //this is async
             _crepo.Save();
-            //there should always be an existing entity
-            //if (clientToUpdate == null) return BadRequest();
             return Ok(entity);
         }
 
@@ -93,8 +90,6 @@ namespace Controllers
         {
             _crepo.Delete(entity);
             _crepo.Save();
-            // should be pulling an existing entity, should always exist
-            //if(client == null) return NotFound();
             return Ok();
         }
     }
