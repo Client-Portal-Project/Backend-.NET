@@ -17,12 +17,10 @@ namespace Controllers
     public class ApplicantOccupationController : ControllerBase
     {
         private readonly IApplicantOccupationRepo _orepo;
-        //private readonly ILogger<ApplicantOccupationController> _logger;
 
         public ApplicantOccupationController(IApplicantOccupationRepo orepo)
         {
             _orepo = orepo;
-            //_logger = logger;
         }
 
         // GET: api/ApplicantOccupations
