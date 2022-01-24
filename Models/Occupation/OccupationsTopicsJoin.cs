@@ -11,12 +11,9 @@ namespace Models
         [Key]
         public int JoinId { get; set; }
         public int OccupationsId { get; set; }
-        public Occupation Occupations { get; set; }
+        public Occupation ?Occupations { get; set; }
         public int TopicsId { get; set; }
-        public Topic Topics { get; set; }
-        public OccupationsTopicsJoin()
-        {
-        }
+        public Topic ?Topics { get; set; }
     }
 }
 

@@ -13,13 +13,10 @@ namespace Models
     {
         [Key]
         public int SkillId { get; set; }
-        public string SkillName { get; set; }
-        public List<ApplicantSkill> ApplicantSkills { get; set; }
-        public List<SkillNeed> SkillNeeds { get; set; }
+        public string ?SkillName { get; set; }
+        public List<ApplicantSkill> ?ApplicantSkills { get; set; }
+        public List<SkillNeed> ?SkillNeeds { get; set; }
 
-        public Skill()
-        {
-        }
     }
 
     public class SkillValidator : AbstractValidator<Skill>

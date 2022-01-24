@@ -13,10 +13,7 @@ namespace Models
     {
         [Key]
         public int Id { get; set; }
-        public string TopicName { get; set; }
-        public Topic()
-        {
-        }
+        public string ?TopicName { get; set; }
     }
     
     public class TopicsValidator :AbstractValidator<Topic>

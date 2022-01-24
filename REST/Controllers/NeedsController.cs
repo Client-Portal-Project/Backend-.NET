@@ -15,12 +15,12 @@ namespace Controllers
     public class NeedsController : ControllerBase
     {
         private readonly INeedRepo _nrepo;
-        private readonly ILogger<ClientController> _logger;
+        //private readonly ILogger<ClientController> _logger;
 
-        public NeedsController(INeedRepo nrepo, ILogger<ClientController> logger)
+        public NeedsController(INeedRepo nrepo)
         {
             _nrepo = nrepo;
-            _logger = logger;
+            //_logger = logger;
         }
 
         // GET: api/clients

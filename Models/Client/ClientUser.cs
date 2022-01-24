@@ -18,12 +18,8 @@ namespace Models
         public int UserID { get; set; }
         [ForeignKey("Client")]
         public int ClientID { get; set; }
-        public Client Client { get; set; }
-        public User User{ get; set; }
-
-        public ClientUser()
-        {
-        }
+        public Client ?Client { get; set; }
+        public User ?User{ get; set; }
     }
 
     public class ClientUserValidator : AbstractValidator<ClientUser>

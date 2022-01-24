@@ -12,11 +12,7 @@ namespace Models
         [Key]
         public int Id { get; set; }
         public int ClientId { get; set; }
-        public ICollection<OrderLine> OrderLines { get; set; }
-        public Order()
-        {
-        }
-
+        public ICollection<OrderLine> ?OrderLines { get; set; }
     }
     public class OrdersValidator : AbstractValidator<Order>
     {

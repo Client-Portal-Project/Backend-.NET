@@ -16,14 +16,10 @@ namespace Models
         public int SkillNeedId { get; set; }
         [ForeignKey("Need")]
         public int NeedId { get; set; }
-        public Need Need { get; set; }
+        public Need ?Need { get; set; }
         [ForeignKey("Skill")]
         public int SkillId { get; set; }
-        public Skill Skill { get; set; }
-
-        public SkillNeed()
-        {
-        }
+        public Skill ?Skill { get; set; }
     }
 
     public class SkillNeedValidator : AbstractValidator<SkillNeed>

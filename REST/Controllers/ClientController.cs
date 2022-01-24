@@ -17,12 +17,12 @@ namespace Controllers
     public class ClientController : ControllerBase
     {
         private readonly IClientRepo _crepo;
-        private readonly ILogger<ClientController> _logger;
+        //private readonly ILogger<ClientController> _logger;
 
-        public ClientController(IClientRepo crepo, ILogger<ClientController> logger)
+        public ClientController(IClientRepo crepo)
         {
             _crepo = crepo;
-            _logger = logger;
+            //_logger = logger;
         }
 
         // GET: api/clients
