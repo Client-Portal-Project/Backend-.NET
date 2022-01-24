@@ -16,7 +16,6 @@ namespace DataLayer
             _context = context;
         }
 
-        // example with nav props
         public Client GetByIdWithNavProps(int id)
         {
             var client = _context.Clients

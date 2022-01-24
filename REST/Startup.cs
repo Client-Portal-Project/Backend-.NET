@@ -28,18 +28,9 @@ namespace REST
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IClientRepo, ClientRepo>();
-            services.AddScoped<INeedRepo, NeedRepo>();
-            services.AddScoped<IApplicantOccupationRepo, ApplicantOccupationRepo>();
-            // services.AddScoped<IOwnerRepo, OwnerRepo>();
-
-            // services.AddDbContext<BatchesDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "TestDatabase"));
-
-            // TODO use when psql database is good to use
 
             services.AddDbContext<BatchesDBContext>(opts => opts.UseNpgsql(Configuration.GetConnectionString("batchesDB")));
 
@@ -71,7 +62,6 @@ namespace REST
             );
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             Stripe.StripeConfiguration.ApiKey = "sk_test_51JPsbPLwtPYhS8YtUvEDttDcmfwwcdglHCSs9nyfNJIbgVdzY1HVeTDUOefYYbiUBiaQM1zwWOj1vHqHFYPwjFtV00nuyv4l8A";
@@ -83,8 +73,6 @@ namespace REST
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Client_Portal v1"));
             }
 
-            // TODO: for security, make sure this is more defined later on
-            //app.UseCors(opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             if (env.IsDevelopment())
             {

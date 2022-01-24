@@ -10,10 +10,8 @@ namespace DataLayer
 {
     public class ApplicantOccupationRepo : GenericRepo<ApplicantOccupation>, IApplicantOccupationRepo
     {
-        private readonly BatchesDBContext _context;
         public ApplicantOccupationRepo(BatchesDBContext context) : base(context)
         {
-            _context = context;
         }
     }
 }
