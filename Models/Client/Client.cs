@@ -14,13 +14,9 @@ namespace Models
     {
         [Key]
         public int ClientId { get; set; }
-        public string CompanyName { get; set; }
-        public List<Need> Needs{ get; set; }
-        public List<ClientUser> ClientUsers { get; set; }
-
-        public Client()
-        {
-        }
+        public string ?CompanyName { get; set; }
+        public List<Need> ?Needs{ get; set; }
+        public List<ClientUser> ?ClientUsers { get; set; }
     }
 
     public class CompanyValidator : AbstractValidator<Client>

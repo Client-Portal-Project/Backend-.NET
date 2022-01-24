@@ -17,11 +17,7 @@ namespace Models
         public DateTime Date { get; set; }
         [ForeignKey("Application")]
         public int ApplicationId { get; set; }
-        public Application Application { get; set; }
-
-        public Interview()
-        {
-        }
+        public Application ?Application { get; set; }
     }
 
     public class InterviewValidator : AbstractValidator<Interview>

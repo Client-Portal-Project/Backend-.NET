@@ -17,22 +17,18 @@ namespace Models
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
-        public Owner Owner { get; set; }
+        public Owner ?Owner { get; set; }
 
         [ForeignKey("ApplicantOccupation")]
         public int ApplicantOccupationId { get; set; }
-        public ApplicantOccupation ApplicantOccupation { get; set; }
+        public ApplicantOccupation ?ApplicantOccupation { get; set; }
 
         [ForeignKey("Need")]
         public int NeedId { get; set; }
-        public Need Need { get; set; }
+        public Need ?Need { get; set; }
         public DateTime DateOfApplication { get; set; }
         public int Status { get; set; }
-        public List<Interview> Interviews { get; set; }
-
-        public Application()
-        {
-        }
+        public List<Interview> ?Interviews { get; set; }
     }
 
     public class ApplicationValidator : AbstractValidator<Application>

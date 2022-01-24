@@ -15,23 +15,18 @@ namespace Models
         public int NeedId { get; set; }
         [ForeignKey("Client")]
         public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public Client ?Client { get; set; }
         public int AmountNeeded { get; set; }
         public int AmountFulfilled { get; set; }
         // EduField: Biology, HVAC, CompSci...ect
-        public string EducationField { get; set; }
+        public string ?EducationField { get; set; }
         public int YearsExperience { get; set; }
-        public List<SkillNeed> SkillNeeds { get; set; }
-        public List<Application> Applications { get; set; }
-        public string ExtraDescription { get; set; }
-        public string JobTitle { get; set; }
+        public List<SkillNeed> ?SkillNeeds { get; set; }
+        public List<Application> ?Applications { get; set; }
+        public string ?ExtraDescription { get; set; }
+        public string ?JobTitle { get; set; }
         // Edu Lvl: Associate, Batchelor, ext...
-        public string EducationLevel { get; set; }
-
-        public Need()
-        {
-
-        }
+        public string ?EducationLevel { get; set; }
     }
 
     public class NeedsValidator : AbstractValidator<Need>

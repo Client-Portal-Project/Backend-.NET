@@ -17,9 +17,8 @@ namespace Models
         public int OwnerId { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; }
-        public List<Application> Applications { get; set; }
-        public Owner() { }
+        public User ?User { get; set; }
+        public List<Application> ?Applications { get; set; }
     }
 
     public class OwnersValidator : AbstractValidator<Owner>

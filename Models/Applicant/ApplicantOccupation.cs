@@ -17,15 +17,11 @@ namespace Models
 
         [ForeignKey("Applicant")]
         public int ApplicantId { get; set; }
-        public Applicant Applicant { get; set; }
-        public List<Application> Applications { get; set; }
-        public string JobTitle { get; set; }
+        public Applicant ?Applicant { get; set; }
+        public List<Application> ?Applications { get; set; }
+        public string ?JobTitle { get; set; }
         public int YearsExperience { get; set; }
         public bool OpenMarket { get; set; }
-
-        public ApplicantOccupation()
-        {
-        }
     }
 
     public class ApplicantOccupationValidator : AbstractValidator<ApplicantOccupation>

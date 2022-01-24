@@ -11,12 +11,9 @@ namespace Models
     {
         [Key]
         public int Id { get; set; }
-        public string OccupationName { get; set; }
-        public string Description { get; set; }
-        public ICollection<OrderLine> OrderLines { get; set; }
-        public Occupation()
-        {
-        }
+        public string ?OccupationName { get; set; }
+        public string ?Description { get; set; }
+        public ICollection<OrderLine> ?OrderLines { get; set; }
     }
 
     public class OccupationsValidator : AbstractValidator<Occupation>
