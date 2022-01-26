@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 // Revisit, ensure the Repo applies to our entity model, refactor if needed
 namespace DataLayer
 {
-    public interface IClientRepo : IGenericRepo<Client>
+    public interface IApplicantOccupation : IGenericRepo<ApplicantOccupation>
     {
         // methods specific to Client table
     }

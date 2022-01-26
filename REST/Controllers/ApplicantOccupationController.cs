@@ -16,9 +16,9 @@ namespace Controllers
     [ApiController]
     public class ApplicantOccupationController : ControllerBase
     {
-        private readonly IApplicantOccupationRepo _orepo;
+        private readonly IApplicantOccupation _orepo;
 
-        public ApplicantOccupationController(IApplicantOccupationRepo orepo)
+        public ApplicantOccupationController(IApplicantOccupation orepo)
         {
             _orepo = orepo;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public interface INeedRepo : IGenericRepo<Need>
+    public interface INeed : IGenericRepo<Need>
     {
         //methods specific to Need table
     }

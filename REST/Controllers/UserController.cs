@@ -1,4 +1,4 @@
-﻿using DataLayer;
+using DataLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,78 +12,78 @@ namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NeedsController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly INeed _nrepo;
+        private readonly IUser _nrepo;
 
-        public NeedsController(INeed nrepo)
+        public UserController(IUser nrepo)
         {
             _nrepo = nrepo;
         }
 
         // GET: api/clients
         /// <summary>
-        /// Get's all needs
+        /// Get's all Users
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<Need>> Get()
+        public async Task<ActionResult<User>> Get()
         {
-            var needs = await _nrepo.GetAll();
-            return Ok(needs);
+            var Users = await _nrepo.GetAll();
+            return Ok(Users);
         }
 
         // GET api/post/5
         /// <summary>
-        /// GET one needs by client ID
+        /// GET one Users by client ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Need need = await _nrepo.GetById(id);
-            if (need == null) return NotFound();
-            return Ok(need);
+            User User = await _nrepo.GetById(id);
+            if (User == null) return NotFound();
+            return Ok(User);
         }
 
         // POST api/client
         /// <summary>
-        /// Create a Need
+        /// Create a User
         /// </summary>
-        /// <param name="need"></param>
+        /// <param name="User"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post(Need entity)
+        public IActionResult Post(User entity)
         {
             _nrepo.Add(entity);
             _nrepo.Save();
-            return Created("api/AddNeed", entity);
+            return Created("api/AddUser", entity);
         }
 
         // PUT api/client/5
         /// <summary>
-        /// Update Need
+        /// Update User
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="need"></param>
+        /// <param name="User"></param>
         /// <returns></returns>
         [HttpPut]
-        public IActionResult Update(Need need)
+        public IActionResult Update(User User)
         {
-            _nrepo.Update(need);
+            _nrepo.Update(User);
             //async method
             _nrepo.Save();
-            return Ok(need);
+            return Ok(User);
         }
 
         // <summary>
-        /// Delete need 
+        /// Delete User 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Need entity)
+        public IActionResult Delete(User entity)
         {
             _nrepo.Delete(entity);
             _nrepo.Save();

@@ -16,9 +16,9 @@ namespace Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private readonly IClientRepo _crepo;
+        private readonly IClient _crepo;
 
-        public ClientController(IClientRepo crepo)
+        public ClientController(IClient crepo)
         {
             _crepo = crepo;
         }
