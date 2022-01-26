@@ -1,4 +1,4 @@
-﻿using DataLayer;
+using DataLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,78 +12,78 @@ namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NeedsController : ControllerBase
+    public class SkillNeedController : ControllerBase
     {
-        private readonly INeed _nrepo;
+        private readonly ISkillNeed _nrepo;
 
-        public NeedsController(INeed nrepo)
+        public SkillNeedController(ISkillNeed nrepo)
         {
             _nrepo = nrepo;
         }
 
         // GET: api/clients
         /// <summary>
-        /// Get's all needs
+        /// Get's all SkillNeeds
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<Need>> Get()
+        public async Task<ActionResult<SkillNeed>> Get()
         {
-            var needs = await _nrepo.GetAll();
-            return Ok(needs);
+            var SkillNeeds = await _nrepo.GetAll();
+            return Ok(SkillNeeds);
         }
 
         // GET api/post/5
         /// <summary>
-        /// GET one needs by client ID
+        /// GET one SkillNeeds by client ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Need need = await _nrepo.GetById(id);
-            if (need == null) return NotFound();
-            return Ok(need);
+            SkillNeed SkillNeed = await _nrepo.GetById(id);
+            if (SkillNeed == null) return NotFound();
+            return Ok(SkillNeed);
         }
 
         // POST api/client
         /// <summary>
-        /// Create a Need
+        /// Create a SkillNeed
         /// </summary>
-        /// <param name="need"></param>
+        /// <param name="SkillNeed"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post(Need entity)
+        public IActionResult Post(SkillNeed entity)
         {
             _nrepo.Add(entity);
             _nrepo.Save();
-            return Created("api/AddNeed", entity);
+            return Created("api/AddSkillNeed", entity);
         }
 
         // PUT api/client/5
         /// <summary>
-        /// Update Need
+        /// Update SkillNeed
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="need"></param>
+        /// <param name="SkillNeed"></param>
         /// <returns></returns>
         [HttpPut]
-        public IActionResult Update(Need need)
+        public IActionResult Update(SkillNeed SkillNeed)
         {
-            _nrepo.Update(need);
+            _nrepo.Update(SkillNeed);
             //async method
             _nrepo.Save();
-            return Ok(need);
+            return Ok(SkillNeed);
         }
 
         // <summary>
-        /// Delete need 
+        /// Delete SkillNeed 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Need entity)
+        public IActionResult Delete(SkillNeed entity)
         {
             _nrepo.Delete(entity);
             _nrepo.Save();

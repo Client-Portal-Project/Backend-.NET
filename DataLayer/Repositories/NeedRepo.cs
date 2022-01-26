@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class NeedRepo : GenericRepo<Need>, INeedRepo
+    public class NeedRepo : GenericRepo<Need>, INeed
     {
         public NeedRepo(BatchesDBContext context) : base(context)
         {
