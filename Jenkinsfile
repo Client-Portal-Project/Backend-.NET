@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Restoring' 
-                    CMD = 'dotnet restore Backend-NET.sln > result'
+                    CMD = 'dotnet restore Backend-.NET.sln > result'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script { 
                     CURR = 'Cleaning'
-                    CMD = 'dotnet clean Backend-NET.sln --configuration Release > result'
+                    CMD = 'dotnet clean Backend-.NET.sln --configuration Release > result'
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     CURR = 'Building'
-                    CMD = "dotnet build Backend-NET.sln --configuration Release --no-restore > result"
+                    CMD = "dotnet build Backend-.NET.sln --configuration Release --no-restore > result"
                     if (sh(script: CMD, returnStatus: true) != 0) {
                         ERR = readFile('result').trim()
                         CMD = CMD.split(" > ")[0].trim()
@@ -75,7 +75,7 @@ pipeline {
                 script {
                     CURR = 'Static Analysis'
                     CMD = '''dotnet $SCAN/SonarScanner.MSBuild.dll begin /k:$NAME /o:$ORG 
-                            dotnet build Backend-NET.sln
+                            dotnet build Backend-.NET.sln
                             dotnet $SCAN/SonarScanner.MSBuild.dll end'''
                 }
                 withSonarQubeEnv('sonarserve') {
