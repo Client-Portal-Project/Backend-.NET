@@ -13,14 +13,17 @@ namespace Models
     {
         [Key]
         public int UserId { get; set; }
-        public string ?Email { get; set; }
-        public string ?Password { get; set; }
-        public bool Approved { get; set; }
+        public string given_name { get; set; }
+        public string family_name { get; set; }
+        public string name { get; set; }
+        public string email { get; set; }
+        public boolean email_verified { get; set; }
+        public string phone_number { get; set; }
+        public boolean phone_number_verified { get; set; }
+        public string date_of_birth { get; set; }
         public Owner ?Owner { get; set; }
         public Applicant ?Applicant { get; set; }
         public ClientUser ?ClientUser { get; set; }
-        public string ?FirstName { get; set; }
-        public string ?LastName { get; set; }
     }
 
     public class UserValidator : AbstractValidator<User>
