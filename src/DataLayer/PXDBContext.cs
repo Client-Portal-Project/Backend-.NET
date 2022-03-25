@@ -3,7 +3,7 @@ using Models;
 
 namespace DataLayer
 {
-    public class BatchesDBContext : DbContext
+    public class PXDBContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<ApplicantOccupation> ApplicantOccupations { get; set; }
@@ -17,12 +17,10 @@ namespace DataLayer
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SkillNeed> SkillNeeds { get; set; }
         public DbSet<ClientUser> ClientUsers { get; set; }
-        public BatchesDBContext() { }
+        public PXDBContext() { }
 
 
-        public BatchesDBContext(DbContextOptions options) : base(options)
-        {
-        }
+        public PXDBContext(DbContextOptions options) : base(options){}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,7 +73,5 @@ namespace DataLayer
             .ValueGeneratedOnAdd();
 
         }
-
-
     }
 }

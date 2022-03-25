@@ -14,13 +14,14 @@ namespace Models
     {
         [Key]
         public int ApplicantId { get; set; }
-        public byte[] ?Resume { get; set; }
+        public byte[] ?Resume  { get; set; }
         public string ?AboutMe { get; set; }
 
-        public string ?EducationLevel { get; set; }
-        public string ?EducationField { get; set; }
+        public string ?EducationLevel   { get; set; }
+        public string ?EducationField   { get; set; }
         public string ?EmploymentStatus { get; set; }
         public List<ApplicantSkill> ?ApplicantSkills { get; set; }
+
         [ForeignKey("User")]
         public int UserId { get; set; }
         public User ?User { get; set; }

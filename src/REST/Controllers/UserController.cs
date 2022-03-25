@@ -1,12 +1,10 @@
-using DataLayer;
-using Microsoft.AspNetCore.Http;
+
+using BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Controllers
 {
@@ -14,80 +12,53 @@ namespace Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUser _nrepo;
+        private readonly IUserCalc _calc;
 
-        public UserController(IUser nrepo)
-        {
-            _nrepo = nrepo;
+        public UserController(IUserCalc calc){
+            _calc = calc;
         }
 
-        // GET: api/clients
-        /// <summary>
-        /// Get's all Users
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<User>> Get()
-        {
-            var Users = await _nrepo.GetAll();
+        public async Task<ActionResult<User>> Get(){
+            var Users = await _calc.GetAll();
+            if (Users == null) return NotFound();
             return Ok(Users);
         }
-
-        // GET api/post/5
-        /// <summary>
-        /// GET one Users by client ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            User User = await _nrepo.GetById(id);
+        public async Task<IActionResult> Get(int id){
+            var User = await _calc.GetById(id);
             if (User == null) return NotFound();
             return Ok(User);
         }
-
-        // POST api/client
-        /// <summary>
-        /// Create a User
-        /// </summary>
-        /// <param name="User"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult Post(User entity)
-        {
-            _nrepo.Add(entity);
-            _nrepo.Save();
-            return Created("api/AddUser", entity);
-        }
-
-        // PUT api/client/5
-        /// <summary>
-        /// Update User
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="User"></param>
-        /// <returns></returns>
-        [HttpPut]
-        public IActionResult Update(User User)
-        {
-            _nrepo.Update(User);
-            //async method
-            _nrepo.Save();
+        [HttpGet("{email}")]
+        public async Task<IActionResult> Get(string email){
+            var User = await _calc.GetByEmail(email);
+            if (User == null) return NotFound();
             return Ok(User);
         }
-
-        // <summary>
-        /// Delete User 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Post(User entity){
+            return _calc.Add(entity);
+        }
+        [HttpPut]
+        public IActionResult Update(User User){
+            return _calc.Update(User);
+        }
+        [HttpDelete]
+        public IActionResult Delete(User User){
+            return _calc.Delete(User);
+        }
         [HttpDelete("{id}")]
-        public IActionResult Delete(User entity)
-        {
-            _nrepo.Delete(entity);
-            _nrepo.Save();
-            return Ok();
+        public IActionResult Delete(int id){
+            return _calc.Delete(id);
+        }
+        [HttpGet("exists/{id}")]
+        public async Task<IActionResult> Exists(int id){
+            return Ok(await _calc.Exists(id));
+        }
+        [HttpGet("exists/{email}")]
+        public async Task<IActionResult> Exists(string email){
+            return Ok(await _calc.Exists(email));
         }
     }
 }
