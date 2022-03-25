@@ -13,7 +13,7 @@ namespace Models
     {
         [Key]
         public int UserId { get; set; }
-        public string given_name { get; set; }
+        public string first_name { get; set; }
         public string family_name { get; set; }
         public string name { get; set; }
         public string email { get; set; }
