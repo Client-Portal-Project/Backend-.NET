@@ -32,7 +32,7 @@ namespace REST
         {
             services.AddControllers();
 
-            services.AddDbContext<BatchesDBContext>(opts => opts.UseNpgsql(Configuration.GetConnectionString("batchesDB")));
+            services.AddDbContext<PXDBContext>(opts => opts.UseNpgsql(Configuration.GetConnectionString("PXDB")));
 
             services.AddSingleton(_ => Configuration);
 
